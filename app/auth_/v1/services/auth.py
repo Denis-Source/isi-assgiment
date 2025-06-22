@@ -49,10 +49,11 @@ class AuthV1Service(BaseService):
         user_model = get_user_model()
 
         try:
-            user = user_model.objects.create(
+            user = user_model(
                 username=username,
-                password=password,
             )
+            user.set_password(password)
+            user.save()
         except IntegrityError as e:
             self._logger.warn(f"Failed to register {username}: username taken")
             raise UsernameTakenException() from e

@@ -43,7 +43,7 @@ class AuthV1LoginView(BaseAPIView):
     @swagger_auto_schema(
         operation_id=name,
         tags=tags,
-        request=request_body_serializer_class(),
+        request_body=request_body_serializer_class(),
         responses=responses,
     )
     def post(self, *args, **kwargs) -> Response:
