@@ -14,6 +14,7 @@ from common.base.tests import BaseAPITestCase
 class ChatV1ThreadUpsertTestCase(BaseAPITestCase):
     def setUp(self) -> None:
         super().setUp()
+
         self.url = reverse(
             ChatV1ThreadUpsertView.name,
             kwargs={"participant_id": self.another_user.id},
@@ -61,6 +62,7 @@ class ChatV1ThreadUpsertTestCase(BaseAPITestCase):
 class ChatV1ThreadDeleteTestCase(BaseAPITestCase):
     def setUp(self) -> None:
         super().setUp()
+
         self.thread = Thread.objects.create()
         self.thread.participants.add(self.user, through_defaults={})
 
@@ -100,6 +102,7 @@ class ChatV1ThreadDeleteTestCase(BaseAPITestCase):
 class ChatV1ThreadListTestCase(BaseAPITestCase):
     def setUp(self) -> None:
         super().setUp()
+
         self.url = reverse(
             ChatV1ThreadListView.name,
         )

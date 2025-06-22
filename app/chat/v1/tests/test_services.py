@@ -9,7 +9,9 @@ from common.base.tests import BaseTestCase
 
 
 class ChatV1ThreadServiceUpsertTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        super().setUp()
+
         user_model = get_user_model()
         self.user = user_model.objects.create_user(
             username="john_doe",
@@ -57,7 +59,9 @@ class ChatV1ThreadServiceUpsertTestCase(BaseTestCase):
 
 
 class ChatV1ThreadServiceRemoveTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        super().setUp()
+
         user_model = get_user_model()
         self.user = user_model.objects.create_user(
             username="john_doe",
@@ -86,8 +90,9 @@ class ChatV1ThreadServiceRemoveTestCase(BaseTestCase):
 
 
 class ChatV1ThreadListServiceTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
+
         user_model = get_user_model()
 
         self.service = ChatV1ThreadListService()

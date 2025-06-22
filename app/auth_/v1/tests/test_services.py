@@ -8,7 +8,9 @@ from common.base.tests import BaseTestCase
 
 
 class AuthV1ServiceLoginTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        super().setUp()
+
         self.service = AuthV1Service()
         self.username = "johndoe"
         self.password = "SeccureP4assw0rd"
@@ -39,7 +41,9 @@ class AuthV1ServiceLoginTestCase(BaseTestCase):
 
 
 class AuthV1ServiceRefreshTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        super().setUp()
+
         self.service = AuthV1Service()
         self.username = "johndoe"
         self.password = "SeccureP4assw0rd"
@@ -65,7 +69,9 @@ class AuthV1ServiceRefreshTestCase(BaseTestCase):
 
 
 class AuthV1ServiceRegisterTestCase(BaseTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
+        super().setUp()
+
         self.service = AuthV1Service()
         self.username = "johndoe"
         self.password = "SeccureP4assw0rd"

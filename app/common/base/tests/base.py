@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 class BaseTestCase(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
 
         logging.disable(logging.CRITICAL)

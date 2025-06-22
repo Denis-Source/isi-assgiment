@@ -13,6 +13,7 @@ from common.base.tests import BaseAPITestCase
 class AuthV1LoginTestCase(BaseAPITestCase):
     def setUp(self) -> None:
         super().setUp()
+
         self.url = reverse(AuthV1LoginView.name)
         self.valid_data = {
             "username": self.username,
