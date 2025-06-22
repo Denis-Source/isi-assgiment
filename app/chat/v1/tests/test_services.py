@@ -49,6 +49,10 @@ class ChatV1ThreadServiceUpsertTestCase(BaseTestCase):
                 user=self.user, participant_id=self.another_user.id
             )
 
+    def test_thread_with_self(self):
+        with self.assertRaises(NotFound):
+            self.service.upsert(user=self.user, participant_id=self.user.id)
+
 
 class ChatV1ThreadServiceRemoveTestCase(BaseTestCase):
     def setUp(self):

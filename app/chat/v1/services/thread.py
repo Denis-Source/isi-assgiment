@@ -45,7 +45,11 @@ class ChatV1ThreadService(BaseService):
     @atomic
     def upsert(self, user, participant_id: str) -> Thread:
         user_model = get_user_model()
-        another_user = user_model.objects.filter(id=participant_id).first()
+        another_user = (
+            user_model.objects.filter(id=participant_id)
+            .exclude(id=user.id)
+            .first()
+        )
         if not another_user:
             self._logger.warn(
                 f"Failed to upsert a thread for {user}:"
