@@ -81,8 +81,8 @@ class ChatV1ThreadListService(BaseService):
 
         result = {
             "results": results,
-            "total": total,
-            "total_unread": total_unread,
+            "count": total,
+            "count_unread": total_unread,
         }
 
         self._logger.info(f"Retrieved list of threads for {user}")

@@ -133,8 +133,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_filter_by_participant(self):
         result = self.service.list(
@@ -147,8 +147,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.thread,
             ],
         )
-        self.assertEqual(result["total"], 1)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 1)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_created_at_asc(self):
         result = self.service.list(
@@ -162,8 +162,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_created_at_desc(self):
         self.thread.created_at = self.another_thread.created_at + timedelta(
@@ -182,8 +182,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_updated_at_asc(self):
         self.another_thread.created_at = self.thread.updated_at + timedelta(
@@ -202,8 +202,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_updated_at_desc(self):
         self.thread.updated_at = self.another_thread.updated_at + timedelta(
@@ -222,8 +222,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_last_message_sent_at_asc(self):
         result = self.service.list(
@@ -238,8 +238,8 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
 
     def test_order_by_last_message_sent_at_desc(self):
         self.message.created_at = self.another_message.created_at + timedelta(
@@ -259,5 +259,5 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
                 self.another_thread,
             ],
         )
-        self.assertEqual(result["total"], 2)
-        self.assertEqual(result["total_unread"], 1)
+        self.assertEqual(result["count"], 2)
+        self.assertEqual(result["count_unread"], 1)
