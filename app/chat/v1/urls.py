@@ -21,7 +21,7 @@ urlpatterns = [
         name=ChatV1ThreadUpsertView.name,
     ),
     path(
-        "threads/<int:pk>/upsert/",
+        "threads/<int:pk>/delete/",
         ChatV1ThreadDeleteView.as_view(),
         name=ChatV1ThreadDeleteView.name,
     ),

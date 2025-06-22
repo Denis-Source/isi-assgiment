@@ -46,6 +46,7 @@ class ChatV1MessageCreateView(BaseView):
     @swagger_auto_schema(
         operation_id=name,
         tags=tags,
+        request_body=request_body_serializer_class(),
         responses=responses,
     )
     def post(self, _, pk: int, *args, **kwargs) -> Response:
