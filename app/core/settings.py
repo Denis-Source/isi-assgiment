@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     # Project
     "auth_",
+    "chat",
 ]
 
 MIDDLEWARE = [
