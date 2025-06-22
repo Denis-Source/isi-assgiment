@@ -30,7 +30,7 @@ class AuthV1Service(BaseService):
 
         refresh = RefreshToken.for_user(user)
 
-        self._logger.warn(f"Generated refresh token for {user}")
+        self._logger.info(f"Generated refresh token for {user}")
         return str(refresh)
 
     def refresh(self, refresh: str) -> str:
@@ -42,7 +42,7 @@ class AuthV1Service(BaseService):
             )
             raise AuthenticationFailed("Invalid refresh token")
 
-        self._logger.warn("Generated access token")
+        self._logger.info("Generated access token")
         return str(token.access_token)
 
     def register(self, username: str, password: str) -> str:
@@ -60,5 +60,5 @@ class AuthV1Service(BaseService):
 
         refresh = RefreshToken.for_user(user)
 
-        self._logger.warn(f"Registered user {user}")
+        self._logger.info(f"Registered user {user}")
         return str(refresh)
