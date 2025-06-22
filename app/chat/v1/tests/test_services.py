@@ -8,6 +8,7 @@ from chat.v1.services import (
     ChatV1ThreadService,
     ChatV1ThreadListService,
     ChatV1MessageService,
+    ChatV1MessageListService,
 )
 from common.base.tests import BaseTestCase
 
@@ -379,3 +380,124 @@ class ChatV1MessageServiceReadTestCase(BaseTestCase):
 
         with self.assertRaises(NotFound):
             self.service.read(user=self.user, message_id=self.message.id)
+
+
+class ChatV1MessageListServiceTestCase(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+
+        user_model = get_user_model()
+
+        self.service = ChatV1MessageListService()
+        self.user = user_model.objects.create(
+            username="john_doe",
+        )
+        self.another_user = user_model.objects.create(
+            username="another_john_doe",
+        )
+
+        self.thread = Thread.objects.create()
+        self.thread.participants.add(
+            self.user, self.another_user, through_defaults={}
+        )
+
+        self.message = Message.objects.create(
+            text="text", sender=self.another_user, thread=self.thread
+        )
+
+        self.another_message = Message.objects.create(
+            text="another_text", sender=self.user, thread=self.thread
+        )
+
+    def test_defaults(self):
+        result = self.service.list(
+            user=self.user,
+            thread_id=self.thread.id,
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.another_message,
+                self.message,
+            ],
+        )
+        self.assertEqual(result["count"], 2)
+
+    def test_filter_by_text_full_match(self):
+        result = self.service.list(
+            user=self.user,
+            text=self.another_message.text,
+            thread_id=self.thread.id,
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.another_message,
+            ],
+        )
+        self.assertEqual(result["count"], 1)
+
+    def test_filter_by_text_partial_match(self):
+        result = self.service.list(
+            user=self.user, text="text", thread_id=self.thread.id
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.another_message,
+                self.message,
+            ],
+        )
+        self.assertEqual(result["count"], 2)
+
+    def test_filter_by_sender(self):
+        result = self.service.list(
+            user=self.user, sender_id=self.user, thread_id=self.thread.id
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.another_message,
+            ],
+        )
+        self.assertEqual(result["count"], 1)
+
+    def test_order_by_created_at_asc(self):
+        result = self.service.list(
+            user=self.user,
+            thread_id=self.thread.id,
+            ordering=self.service.Orderings.CREATED_AT_ASC,
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.message,
+                self.another_message,
+            ],
+        )
+        self.assertEqual(result["count"], 2)
+
+    def test_order_by_created_at_desc(self):
+        self.message.created_at = self.another_message.created_at + timedelta(
+            minutes=5
+        )
+        self.thread.save()
+        result = self.service.list(
+            user=self.user,
+            thread_id=self.thread.id,
+            ordering=self.service.Orderings.CREATED_AT_ASC,
+        )
+
+        self.assertEqual(
+            result["results"],
+            [
+                self.message,
+                self.another_message,
+            ],
+        )
+        self.assertEqual(result["count"], 2)

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
 from django.db.models import (
     Model,
     BooleanField,
@@ -11,6 +12,15 @@ from django.utils.timezone import now
 
 
 class Message(Model):
+    class Meta:
+        indexes = [
+            GinIndex(
+                fields=["text"],
+                name="text_trgm_idx",
+                opclasses=["gin_trgm_ops"],
+            ),
+        ]
+
     is_read = BooleanField(default=False)
     text = TextField()
     sender = ForeignKey(
