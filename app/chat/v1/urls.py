@@ -20,7 +20,7 @@ urlpatterns = [
         name=ChatV1ThreadUpsertView.name,
     ),
     path(
-        "threads/<int:pk>/",
+        "threads/<int:pk>/upsert/",
         ChatV1ThreadDeleteView.as_view(),
         name=ChatV1ThreadDeleteView.name,
     ),
