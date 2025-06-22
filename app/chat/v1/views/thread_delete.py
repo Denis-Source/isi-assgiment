@@ -6,11 +6,11 @@ from rest_framework.response import Response
 
 from chat.v1.services import ChatV1ThreadService
 from common.base.serializers import MessageSerializer
-from common.base.views.base import BaseAPIView
+from common.base.views.base import BaseView
 from common.swagger import SwaggerService
 
 
-class ChatV1ThreadDeleteView(BaseAPIView):
+class ChatV1ThreadDeleteView(BaseView):
     """
     Delete a thread
 

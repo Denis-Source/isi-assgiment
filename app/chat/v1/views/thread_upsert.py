@@ -6,11 +6,11 @@ from rest_framework.response import Response
 
 from chat.v1.serializers import ChatV1ThreadUpsertResponseSerializer
 from chat.v1.services import ChatV1ThreadService
-from common.base.views.base import BaseAPIView
+from common.base.views.base import BaseView
 from common.swagger import SwaggerService
 
 
-class ChatV1ThreadUpsertView(BaseAPIView):
+class ChatV1ThreadUpsertView(BaseView):
     """
     Retrieve a thread by a participant ID
 

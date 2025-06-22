@@ -8,7 +8,7 @@ class ResponseSerializationMismatch(Exception):
     pass
 
 
-class BaseAPIView(APIView):
+class BaseView(APIView):
     name = None
     tags = None
 

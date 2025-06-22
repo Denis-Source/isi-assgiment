@@ -9,11 +9,11 @@ from auth_.v1.serializers import (
     AuthV1LoginResponseSerializer,
 )
 from auth_.v1.services import AuthV1Service
-from common.base.views.base import BaseAPIView
+from common.base.views.base import BaseView
 from common.swagger import SwaggerService
 
 
-class AuthV1LoginView(BaseAPIView):
+class AuthV1LoginView(BaseView):
     """
     Return access and refresh tokens
 

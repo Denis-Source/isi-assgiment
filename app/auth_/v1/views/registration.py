@@ -9,11 +9,11 @@ from auth_.v1.serializers import (
     AuthV1RegistrationRequestSerializer,
 )
 from auth_.v1.services import AuthV1Service
-from common.base.views.base import BaseAPIView
+from common.base.views.base import BaseView
 from common.swagger import SwaggerService
 
 
-class AuthV1RegistrationView(BaseAPIView):
+class AuthV1RegistrationView(BaseView):
     """
     Register a new user
 
