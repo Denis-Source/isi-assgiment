@@ -12,9 +12,9 @@ from common.swagger import SwaggerService
 
 class ChatV1ThreadUpsertView(BaseView):
     """
-    Retrieve a thread by a participant ID
+    Upsert a thread by a participant ID
 
-    Retrieve a thread by a participant ID
+    Retrieve a thread by a participant ID if it exists
     Create a new thread if it does not exist
 
     Authentication is required
