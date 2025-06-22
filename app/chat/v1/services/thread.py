@@ -70,3 +70,14 @@ class ChatV1ThreadService(BaseService):
             f" for {user}"
         )
         return thread
+
+    def delete(self, user, thread_id: int) -> None:
+        thread = Thread.objects.filter(
+            id=thread_id, participants__in=[user.id]
+        ).first()
+        if not thread:
+            self._logger.warn(f"Failed to delete thread for {user}: not found")
+            raise NotFound()
+
+        thread.delete()
+        self._logger.info(f"Deleted thread {thread} for {user}")

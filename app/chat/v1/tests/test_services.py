@@ -48,3 +48,32 @@ class ChatV1ThreadServiceUpsertTestCase(BaseTestCase):
             self.service.upsert(
                 user=self.user, participant_id=self.another_user.id
             )
+
+
+class ChatV1ThreadServiceRemoveTestCase(BaseTestCase):
+    def setUp(self):
+        user_model = get_user_model()
+        self.user = user_model.objects.create_user(
+            username="john_doe",
+        )
+        self.thread = Thread.objects.create()
+        self.thread.participants.add(self.user, through_defaults={})
+        self.service = ChatV1ThreadService()
+
+    def test_success(self):
+        self.service.delete(user=self.user, thread_id=self.thread.id)
+
+        self.assertFalse(Thread.objects.filter(id=self.thread.id).exists())
+
+    def test_not_exist(self):
+        thread_id = self.thread.id
+        self.thread.delete()
+
+        with self.assertRaises(NotFound):
+            self.service.delete(user=self.user, thread_id=thread_id)
+
+    def test_not_participant(self):
+        self.thread.participants.remove(self.user)
+
+        with self.assertRaises(NotFound):
+            self.service.delete(user=self.user, thread_id=self.thread.id)
