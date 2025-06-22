@@ -41,9 +41,9 @@ class ChatV1ThreadUpsertView(BaseAPIView):
         tags=tags,
         responses=responses,
     )
-    def post(self, _, pk: int, *args, **kwargs) -> Response:
+    def post(self, _, participant_id: int, *args, **kwargs) -> Response:
         thread = self._service.upsert(
-            user=self.request.user, participant_id=pk
+            user=self.request.user, participant_id=participant_id
         )
 
         return self._get_response(thread)

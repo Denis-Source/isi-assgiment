@@ -10,7 +10,8 @@ class ChatV1ThreadUpsertTestCase(BaseAPITestCase):
     def setUp(self) -> None:
         super().setUp()
         self.url = reverse(
-            ChatV1ThreadUpsertView.name, kwargs={"pk": self.another_user.id}
+            ChatV1ThreadUpsertView.name,
+            kwargs={"participant_id": self.another_user.id},
         )
         self.thread = Thread.objects.create()
         self.thread.participants.add(
