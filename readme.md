@@ -1,12 +1,12 @@
-# iSi test assigment
+# iSi test assignment
 
-iSi test assigment
+iSi test assignment
 
 ## Installation
 
 ```shell
 # Clone the repository:
-$ git clone https://github.com/Denis-Source/isi-assgiment.git
+$ git clone https://github.com/Denis-Source/isi-assignment.git
 ```
 
 ```shell
@@ -28,7 +28,7 @@ docker-compose -f docker-compose.yaml up --build
 
 ## Test Data
 
-Test data will load automatically of first docker compose
+Test data will load automatically with first docker compose run.
 It will create the following users with password `SeccureP4assw0rd`:
  - admin (superuser)
  - user-2
