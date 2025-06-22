@@ -8,17 +8,17 @@ from chat.v1.views import (
 
 urlpatterns = [
     path(
-        "thread/",
+        "threads/",
         ChatV1ThreadListView.as_view(),
         name=ChatV1ThreadListView.name,
     ),
     path(
-        "thread/<int:participant_id>/",
+        "threads/<int:participant_id>/",
         ChatV1ThreadUpsertView.as_view(),
         name=ChatV1ThreadUpsertView.name,
     ),
     path(
-        "thread/<int:pk>/delete/",
+        "threads/<int:pk>/delete/",
         ChatV1ThreadDeleteView.as_view(),
         name=ChatV1ThreadDeleteView.name,
     ),
