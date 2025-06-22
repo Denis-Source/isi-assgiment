@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Run format
+python -m black .
+if [ $? -ne 0 ]; then
+  echo "Python formatting with black failed, commit aborted."
+  exit 1
+fi
+
+# Run lint
+python -m flake8 .
+if [ $? -ne 0 ]; then
+  echo "Python linting with flake8 failed, commit aborted."
+  exit 1
+fi

@@ -38,3 +38,8 @@ python manage.py createsuperuser
 # Install development tools (globally)
 pip install -r deployment/requirements/tools.txt
 ```
+
+```shell
+# Apply pre-commit hooks
+$ git config core.hooksPath .git-hooks
+```

@@ -6,7 +6,9 @@ from rest_framework.views import exception_handler
 
 
 def json_handler404(request, exception):
-    return JsonResponse({"detail": "Requested resource does not exist"}, status=404)
+    return JsonResponse(
+        {"detail": "Requested resource does not exist"}, status=404
+    )
 
 
 def json_handler500(_):

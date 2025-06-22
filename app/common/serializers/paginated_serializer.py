@@ -10,4 +10,6 @@ class BasePaginatedResponseSerializer(Serializer):
 
 class BasePaginatedRequestSerializer(Serializer):
     page = IntegerField(default=1, min_value=1, required=False)
-    page_size = IntegerField(default=10, min_value=1, max_value=100, required=False)
+    page_size = IntegerField(
+        default=10, min_value=1, max_value=100, required=False
+    )

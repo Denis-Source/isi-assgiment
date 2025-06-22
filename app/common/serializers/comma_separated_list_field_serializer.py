@@ -10,6 +10,8 @@ class CommaSeparatedListField(ListField):
 
         if isinstance(data, list):
             for item in data:
-                normalized_data.extend(item.strip() for item in str(item).split(","))
+                normalized_data.extend(
+                    item.strip() for item in str(item).split(",")
+                )
 
         return super().to_internal_value(normalized_data)

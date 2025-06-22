@@ -11,7 +11,7 @@ class SwaggerService(BaseService):
         return "swagger-service"
 
     def get_schema(self):
-        schema =  get_schema_view(
+        schema = get_schema_view(
             Info(
                 title=settings.APP_TITLE,
                 default_version="v1",

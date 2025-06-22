@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_yasg",
     # Project
-
 ]
 
 MIDDLEWARE = [
@@ -70,7 +69,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-PASSWORD_HASHING_ITERATIONS = config("PASSWORD_HASHING_ITERATIONS", cast=int, default=870000)
+PASSWORD_HASHING_ITERATIONS = config(
+    "PASSWORD_HASHING_ITERATIONS", cast=int, default=870000
+)
 PASSWORD_HASHERS = [
     "common.password_hashers.variable_pbkdf2.VariablePBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
@@ -78,16 +79,20 @@ PASSWORD_HASHERS = [
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation"
+        ".NumericPasswordValidator",
     },
 ]
 
@@ -107,9 +112,15 @@ DATABASES = {
         "PORT": config("POSTGRES_PORT", cast=int, default=5432),
         "OPTIONS": {
             "pool": {
-                "min_size": config("POSTGRES_POOL_MIN_SIZE", cast=int, default=4),
-                "max_size": config("POSTGRES_POOL_MAX_SIZE", cast=int, default=10),
-                "timeout": config("POSTGRES_POOL_TIMEOUT", cast=int, default=10),
+                "min_size": config(
+                    "POSTGRES_POOL_MIN_SIZE", cast=int, default=4
+                ),
+                "max_size": config(
+                    "POSTGRES_POOL_MAX_SIZE", cast=int, default=10
+                ),
+                "timeout": config(
+                    "POSTGRES_POOL_TIMEOUT", cast=int, default=10
+                ),
             }
         },
         "TEST": {
@@ -135,7 +146,9 @@ REST_FRAMEWORK = {
 
 # Swagger
 SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}},
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
     "USE_SESSION_AUTH": False,
     "DEFAULT_MODEL_RENDERING": "example",
     "DEEP_LINKING": True,
@@ -144,8 +157,14 @@ SWAGGER_SETTINGS = {
 
 # JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=config("JWT_ACCESS_LIFETIME_SECONDS", cast=int, default=300)),
-    "REFRESH_TOKEN_LIFETIME": timedelta(seconds=config("JWT_REFRESH_LIFETIME_SECONDS", cast=int, default=2592000)),
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        seconds=config("JWT_ACCESS_LIFETIME_SECONDS", cast=int, default=300)
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        seconds=config(
+            "JWT_REFRESH_LIFETIME_SECONDS", cast=int, default=2592000
+        )
+    ),
 }
 
 LOGGING = {

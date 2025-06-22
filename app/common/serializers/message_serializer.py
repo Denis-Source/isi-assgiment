@@ -1,4 +1,9 @@
-from rest_framework.fields import CharField, IntegerField, JSONField, BooleanField
+from rest_framework.fields import (
+    CharField,
+    IntegerField,
+    JSONField,
+    BooleanField,
+)
 from rest_framework.serializers import Serializer
 
 
