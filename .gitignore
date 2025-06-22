@@ -1,0 +1,26 @@
+# Virtual envs
+env
+venv
+linux_venv
+
+# Media/Static
+media
+static
+static_root
+
+# Local databases
+*.sqlite3
+*.db
+
+# pyc caches
+.pyc
+__pycache__
+
+# IDE
+.idea
+
+# env files
+.env
+
+# ssh keys
+id_rsa

@@ -1,0 +1,35 @@
+services:
+  database:
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data/
+
+  app:
+    build:
+      dockerfile: deploy/docker/DockerfileDjango
+      args:
+        REQUIREMENTS: deploy/requirements/development.txt
+    volumes:
+      - .:/code
+      - static:/var/static
+      - media:/var/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    env_file:
+      - .env
+    command: bash -c "
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate &&
+      uvicorn core.asgi:application --host 0.0.0.0 --port 8000"
+
+volumes:
+  database: null
+  static: null
+  media: null

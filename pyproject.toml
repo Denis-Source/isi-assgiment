@@ -1,0 +1,17 @@
+[tool.black]
+line-length = 79
+exclude = '''
+/(
+    .git
+  | __pycache__
+  | build
+  | dist
+  | venv
+)/
+'''
+
+[tool.flake8]
+max-line-length = 79
+exclude = '.git,__pycache__,build,dist,venv'
+select = "E,W,F"
+ignore = "E203, E231, W503, E999"

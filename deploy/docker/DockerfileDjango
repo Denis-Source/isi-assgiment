@@ -1,0 +1,14 @@
+FROM python:3.12
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+ARG REQUIREMENTS
+ARG PORT
+
+WORKDIR /app
+
+COPY ../app /app/
+COPY ../deploy deploy
+
+RUN python -m pip install --no-cache-dir -r ${REQUIREMENTS}
