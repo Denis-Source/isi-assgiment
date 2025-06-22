@@ -2,13 +2,14 @@ from django.urls import reverse
 from rest_framework import status
 
 from chat.models import Thread, Message
-from chat.v1.services import ChatV1ThreadListService
+from chat.v1.services import ChatV1ThreadListService, ChatV1MessageListService
 from chat.v1.views import (
     ChatV1ThreadUpsertView,
     ChatV1ThreadDeleteView,
     ChatV1ThreadListView,
 )
 from chat.v1.views.message_create import ChatV1MessageCreateView
+from chat.v1.views.message_list import ChatV1MessageListView
 from chat.v1.views.message_read import ChatV1MessageReadView
 from common.base.tests import BaseAPITestCase
 
@@ -316,3 +317,96 @@ class ChatV1MessageReadTestCase(BaseAPITestCase):
         response = self.client.post(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class ChatV1MessageListTestCase(BaseAPITestCase):
+    def setUp(self) -> None:
+        super().setUp()
+
+        self.thread = Thread.objects.create()
+        self.thread.participants.add(
+            self.user, self.another_user, through_defaults={}
+        )
+        self.text = "text"
+        self.message = Message.objects.create(
+            sender=self.user, text=self.text, thread=self.thread
+        )
+
+        self.params = {
+            "page": 1,
+            "page_size": 10,
+            "text": self.text,
+            "sender_id": self.user.id,
+            "ordering": ChatV1MessageListService.Orderings.CREATED_AT_DESC,
+        }
+        self.url = reverse(
+            ChatV1MessageListView.name, kwargs={"pk": self.thread.id}
+        )
+
+    def test_success(self):
+        response = self.client.get(
+            self.url,
+            headers=self.get_auth_headers(),
+            query_params=self.params,
+        )
+        response_json = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response_json,
+            {
+                "count": 1,
+                "next": None,
+                "previous": None,
+                "results": [
+                    {
+                        "id": self.message.id,
+                        "text": self.text,
+                        "sender": {
+                            "id": self.user.id,
+                            "username": self.username,
+                        },
+                        "is_read": self.message.is_read,
+                        "created_at": self.message.created_at.strftime(
+                            "%Y-%m-%dT%H:%M:%S.%fZ"
+                        ),
+                    }
+                ],
+            },
+        )
+
+    def test_sender_id_invalid(self):
+        params = self.params.copy()
+        params["sender_id"] = "invalid"
+
+        response = self.client.get(
+            self.url,
+            headers=self.get_auth_headers(),
+            query_params=params,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_text_too_long(self):
+        params = self.params.copy()
+        params["text"] = "invalid" * 100
+
+        response = self.client.get(
+            self.url,
+            headers=self.get_auth_headers(),
+            query_params=params,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_invalid_ordering(self):
+        params = self.params.copy()
+        params["ordering"] = "invalid"
+
+        response = self.client.get(
+            self.url,
+            headers=self.get_auth_headers(),
+            query_params=params,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

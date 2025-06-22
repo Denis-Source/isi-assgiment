@@ -6,6 +6,7 @@ from chat.v1.views import (
     ChatV1ThreadListView,
 )
 from chat.v1.views.message_create import ChatV1MessageCreateView
+from chat.v1.views.message_list import ChatV1MessageListView
 from chat.v1.views.message_read import ChatV1MessageReadView
 
 urlpatterns = [
@@ -25,9 +26,14 @@ urlpatterns = [
         name=ChatV1ThreadDeleteView.name,
     ),
     path(
-        "threads/<int:pk>/messages/",
+        "threads/<int:pk>/messages/create/",
         ChatV1MessageCreateView.as_view(),
         name=ChatV1MessageCreateView.name,
+    ),
+    path(
+        "threads/<int:pk>/messages/",
+        ChatV1MessageListView.as_view(),
+        name=ChatV1MessageListView.name,
     ),
     path(
         "messages/<int:pk>/read/",
