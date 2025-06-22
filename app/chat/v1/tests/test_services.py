@@ -4,7 +4,11 @@ from django.contrib.auth import get_user_model
 from rest_framework.exceptions import NotFound
 
 from chat.models import Thread, Message
-from chat.v1.services import ChatV1ThreadService, ChatV1ThreadListService
+from chat.v1.services import (
+    ChatV1ThreadService,
+    ChatV1ThreadListService,
+    ChatV1MessageService,
+)
 from common.base.tests import BaseTestCase
 
 
@@ -266,3 +270,112 @@ class ChatV1ThreadListServiceTestCase(BaseTestCase):
         )
         self.assertEqual(result["count"], 2)
         self.assertEqual(result["count_unread"], 1)
+
+
+class ChatV1MessageServiceCreateTestCase(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+
+        user_model = get_user_model()
+
+        self.service = ChatV1MessageService()
+        self.user = user_model.objects.create(
+            username="john_doe",
+        )
+        self.another_user = user_model.objects.create(
+            username="another_john_doe",
+        )
+
+        self.thread = Thread.objects.create()
+        self.thread.participants.add(
+            self.user, self.another_user, through_defaults={}
+        )
+        self.text = "text"
+
+    def test_success(self):
+        result = self.service.create(
+            user=self.user, thread_id=self.thread.id, text=self.text
+        )
+        result_db = Message.objects.get()
+
+        self.assertEqual(result, result_db)
+        self.assertEqual(result_db.sender, self.user)
+        self.assertEqual(result_db.thread, self.thread)
+        self.assertEqual(result_db.text, self.text)
+
+    def test_thread_not_exist(self):
+        thread_id = self.thread.id
+        self.thread.delete()
+
+        with self.assertRaises(NotFound):
+            self.service.create(
+                user=self.user, thread_id=thread_id, text=self.text
+            )
+
+    def test_not_participant(self):
+        self.thread.participants.remove(self.user)
+
+        with self.assertRaises(NotFound):
+            self.service.create(
+                user=self.user, thread_id=self.thread.id, text=self.text
+            )
+
+
+class ChatV1MessageServiceReadTestCase(BaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+
+        user_model = get_user_model()
+
+        self.service = ChatV1MessageService()
+        self.user = user_model.objects.create(
+            username="john_doe",
+        )
+        self.another_user = user_model.objects.create(
+            username="another_john_doe",
+        )
+
+        self.thread = Thread.objects.create()
+        self.thread.participants.add(
+            self.user, self.another_user, through_defaults={}
+        )
+        self.message = Message.objects.create(
+            thread=self.thread,
+            sender=self.another_user,
+            text="text",
+            is_read=False,
+        )
+
+    def test_success(self):
+        result = self.service.read(user=self.user, message_id=self.message.id)
+        result_db = Message.objects.get()
+
+        self.assertEqual(result, result_db)
+        self.assertEqual(result_db.is_read, True)
+
+    def test_not_exist(self):
+        message_id = self.message.id
+        self.message.delete()
+
+        with self.assertRaises(NotFound):
+            self.service.read(user=self.user, message_id=message_id)
+
+    def test_not_participant(self):
+        self.thread.participants.remove(self.user)
+
+        with self.assertRaises(NotFound):
+            self.service.read(user=self.user, message_id=self.message.id)
+
+    def test_already_read(self):
+        self.message.is_read = True
+        self.message.save()
+
+        with self.assertRaises(NotFound):
+            self.service.read(user=self.user, message_id=self.message.id)
+
+    def test_is_sender(self):
+        self.message.sender = self.user
+        self.message.save()
+
+        with self.assertRaises(NotFound):
+            self.service.read(user=self.user, message_id=self.message.id)
