@@ -24,13 +24,15 @@ docker-compose -f docker-compose.yaml up --build
 ```
 
 > Project should run at http://127.0.0.1:8000/
+> The project will contain test data to start with
 
-```shell
-# Create admin user
-python manage.py createsuperuser
-```
+## Test Data
 
-> Django management commands should be run in the `django` docker container
+Test data will load automatically of first docker compose
+It will create the following users with password `SeccureP4assw0rd`:
+ - admin (superuser)
+ - user-2
+ - user-3
 
 ## Development Tools
 

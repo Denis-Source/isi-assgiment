@@ -18,16 +18,24 @@ services:
       - .:/code
       - static:/var/static
       - media:/var/static
+      - ./deploy/test_data/test_data.json:/var/test_data.json
     ports:
       - "8000:8000"
     depends_on:
       - database
     env_file:
       - .env
-    command: bash -c "
-      python manage.py collectstatic --noinput &&
-      python manage.py migrate &&
-      uvicorn core.asgi:application --host 0.0.0.0 --port 8000"
+    command: >
+      bash -c "
+        python manage.py collectstatic --noinput &&
+        python manage.py migrate &&
+
+        if [ ! -f /app/.data_loaded ]; then
+          python manage.py loaddata /var/test_data.json && touch /app/.data_loaded
+        fi &&
+
+        uvicorn core.asgi:application --host 0.0.0.0 --port 8000
+      "
 
 volumes:
   database: null
