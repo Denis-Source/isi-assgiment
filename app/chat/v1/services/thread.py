@@ -8,8 +8,6 @@ from common.base.services import BaseService
 
 
 class ChatV1ThreadService(BaseService):
-    PARTICIPANT_LIMIT = 2
-
     def _get_name(self):
         return "chat-v1-thread-service"
 
